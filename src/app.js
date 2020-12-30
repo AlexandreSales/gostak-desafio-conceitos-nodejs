@@ -180,16 +180,36 @@ app.delete("/repositories/:id", (request, response) => {
 
 app.post("/repositories/:id/like", (request, response) => {
   
+  /**
+   * Busca Id no Url Params
+   */
   const { id } = request.params; 
 
+  /**
+   * procura indice em um array com "findIndex" que retorna a posicao de um
+   * objeto na busca, tambem pode ser utilizado "find" que retorno o objeto 
+   * procurado 
+   */
   const itemIndex = repositories.findIndex(repository => repository.id === id);
 
+  /**
+   * Verifica se o se o indice do respositoria foi encontrado no array de 
+   * respositorios, caso não tenha encontrado responde com a mensagem que 
+   * não foi encontrado
+   */
   if (!(itemIndex >= 0)) {
     return response.status(400).json({ error: 'Repository does not exists.' })
   }
 
+  /**
+   * Incrementa o like ao do repositorio encontrado
+   */
   repositories[itemIndex].likes += 1;
 
+  /**
+   * responde com o repositorio encontrado e atualizado com o incremento 
+   * do like
+   */
   return response.json(repositories[itemIndex]);
 });
 
